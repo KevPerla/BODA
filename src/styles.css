@@ -1,0 +1,356 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Design system definition.
+ *
+ * The @theme inline block maps CSS custom properties to Tailwind utility
+ * classes (e.g. --color-primary -> bg-primary, text-primary).
+ *
+ * The :root and .dark blocks define the actual color values using oklch.
+ * All colors MUST use oklch format.
+ *
+ * To add a new semantic color:
+ * 1. Add the variable to :root (light value) and .dark (dark value)
+ * 2. Register it in @theme inline as --color-<name>: var(--<name>)
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.129 0.042 264.695);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.129 0.042 264.695);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.129 0.042 264.695);
+  --primary: oklch(0.208 0.042 265.755);
+  --primary-foreground: oklch(0.984 0.003 247.858);
+  --secondary: oklch(0.968 0.007 247.896);
+  --secondary-foreground: oklch(0.208 0.042 265.755);
+  --muted: oklch(0.968 0.007 247.896);
+  --muted-foreground: oklch(0.554 0.046 257.417);
+  --accent: oklch(0.968 0.007 247.896);
+  --accent-foreground: oklch(0.208 0.042 265.755);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.984 0.003 247.858);
+  --border: oklch(0.929 0.013 255.508);
+  --input: oklch(0.929 0.013 255.508);
+  --ring: oklch(0.704 0.04 256.788);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.984 0.003 247.858);
+  --sidebar-foreground: oklch(0.129 0.042 264.695);
+  --sidebar-primary: oklch(0.208 0.042 265.755);
+  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-accent: oklch(0.968 0.007 247.896);
+  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
+  --sidebar-border: oklch(0.929 0.013 255.508);
+  --sidebar-ring: oklch(0.704 0.04 256.788);
+}
+
+.dark {
+  --background: oklch(0.129 0.042 264.695);
+  --foreground: oklch(0.984 0.003 247.858);
+  --card: oklch(0.208 0.042 265.755);
+  --card-foreground: oklch(0.984 0.003 247.858);
+  --popover: oklch(0.208 0.042 265.755);
+  --popover-foreground: oklch(0.984 0.003 247.858);
+  --primary: oklch(0.929 0.013 255.508);
+  --primary-foreground: oklch(0.208 0.042 265.755);
+  --secondary: oklch(0.279 0.041 260.031);
+  --secondary-foreground: oklch(0.984 0.003 247.858);
+  --muted: oklch(0.279 0.041 260.031);
+  --muted-foreground: oklch(0.704 0.04 256.788);
+  --accent: oklch(0.279 0.041 260.031);
+  --accent-foreground: oklch(0.984 0.003 247.858);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.984 0.003 247.858);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.551 0.027 264.364);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.208 0.042 265.755);
+  --sidebar-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-accent: oklch(0.279 0.041 260.031);
+  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.551 0.027 264.364);
+}
+
+:root {
+  --envelope-navy: #1a2f5a;
+  --envelope-navy-dark: #0f1d3a;
+  --envelope-navy-light: #2a4373;
+  --wax-gold: #c9a24a;
+  --wax-gold-dark: #8a6a2a;
+  --wax-gold-light: #e8c674;
+  --cream: #f5efe0;
+}
+
+@keyframes wax-break {
+  0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
+  40% { transform: translate(-50%, -50%) scale(1.15) rotate(-8deg); opacity: 1; }
+  100% { transform: translate(-70%, 20%) scale(0.9) rotate(-25deg); opacity: 0; }
+}
+
+@keyframes card-out {
+  0% { transform: translateY(0) rotate(0) scale(0.6); opacity: 0; }
+  60% { opacity: 1; }
+  100% { transform: var(--card-final) scale(1); opacity: 1; }
+}
+
+.envelope-texture {
+  background-image:
+    repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0 2px, transparent 2px 4px),
+    repeating-linear-gradient(-45deg, rgba(0,0,0,0.03) 0 2px, transparent 2px 4px);
+}
+
+/* ---- Rose meadow background scene ---- */
+
+@keyframes butterfly-flap {
+  0%, 100% { transform: scaleY(1) rotate(0deg); }
+  50% { transform: scaleY(0.82) rotate(-3deg); }
+}
+
+@keyframes butterfly-path-a {
+  0%   { transform: translate(0, 0) rotate(-6deg); }
+  22%  { transform: translate(5vw, -5vh) rotate(4deg); }
+  48%  { transform: translate(1vw, -11vh) rotate(-3deg); }
+  74%  { transform: translate(-6vw, -4vh) rotate(5deg); }
+  100% { transform: translate(0, 0) rotate(-6deg); }
+}
+
+@keyframes butterfly-path-b {
+  0%   { transform: translate(0, 0) rotate(5deg); }
+  26%  { transform: translate(-7vw, -4vh) rotate(-4deg); }
+  55%  { transform: translate(-2vw, -12vh) rotate(3deg); }
+  80%  { transform: translate(5vw, -5vh) rotate(-5deg); }
+  100% { transform: translate(0, 0) rotate(5deg); }
+}
+
+.butterfly-flap {
+  display: inline-block;
+  transform-origin: 50% 40%;
+  animation: butterfly-flap 420ms ease-in-out infinite;
+}
+
+.butterfly-path-a {
+  animation: butterfly-path-a linear infinite;
+}
+
+.butterfly-path-b {
+  animation: butterfly-path-b linear infinite;
+}
+
+@keyframes love-phrase-in {
+  0% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.love-phrase {
+  animation: love-phrase-in 900ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .love-phrase {
+    animation: none;
+  }
+}
+
+/* A real flip, like a split-flap clock — replays every time the digit's key changes */
+@keyframes digit-flip {
+  0% { transform: rotateX(0deg); opacity: 1; }
+  45% { transform: rotateX(-100deg); opacity: 0.35; }
+  55% { transform: rotateX(80deg); opacity: 0.35; }
+  100% { transform: rotateX(0deg); opacity: 1; }
+}
+
+.digit-flip {
+  transform-style: preserve-3d;
+  animation: digit-flip 480ms cubic-bezier(.4,0,.2,1);
+}
+
+@keyframes calendar-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(232,196,71,0.55); }
+  70% { box-shadow: 0 0 0 10px rgba(232,196,71,0); }
+  100% { box-shadow: 0 0 0 0 rgba(232,196,71,0); }
+}
+
+.calendar-pulse {
+  animation: calendar-pulse 2.2s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .digit-flip {
+    animation: none;
+  }
+  .calendar-pulse {
+    animation: none;
+  }
+}
+
+/* Ceremony route — the car rides a CSS motion path, the pin bounces right as it arrives */
+.route-car {
+  offset-distance: 0%;
+  offset-rotate: auto;
+}
+
+.route-car-drive {
+  animation: drive-along 3.2s cubic-bezier(.45,.05,.55,.95) forwards;
+}
+
+@keyframes drive-along {
+  from { offset-distance: 0%; }
+  to { offset-distance: 100%; }
+}
+
+.route-pin {
+  transform: translate(-50%, -78%) scale(1);
+  transform-origin: 50% 85%;
+}
+
+.route-pin-arrive {
+  animation: pin-arrive 900ms ease-out 3.2s both;
+}
+
+@keyframes pin-arrive {
+  0%, 45% { transform: translate(-50%, -78%) scale(1); }
+  62% { transform: translate(-50%, -78%) scale(1.32); }
+  78% { transform: translate(-50%, -78%) scale(0.9); }
+  92% { transform: translate(-50%, -78%) scale(1.08); }
+  100% { transform: translate(-50%, -78%) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-car-drive {
+    animation: none;
+    offset-distance: 100%;
+  }
+  .route-pin-arrive {
+    animation: none;
+  }
+}
+
+
+
+@media (prefers-reduced-motion: reduce) {
+  .butterfly-flap,
+  .butterfly-path-a,
+  .butterfly-path-b {
+    animation: none !important;
+  }
+}
+
+/* The wax seal presses in under the finger the instant it's touched, the way
+   pressing real wax would give — feedback on press, not on release. */
+.wax-seal {
+  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.wax-seal:active {
+  transform: translateX(-50%) scale(0.94);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .wax-seal:hover {
+    transform: translateX(-50%) scale(1.04);
+  }
+}
+
+/* Music control — the bars breathe while the song plays, and the button
+   answers the press on pointer-down rather than waiting for release. */
+.music-bar {
+  animation: music-bar 900ms ease-in-out infinite alternate;
+}
+
+@keyframes music-bar {
+  from { transform: scaleY(0.35); }
+  to { transform: scaleY(1); }
+}
+
+.music-toggle {
+  transition: transform 140ms ease-out, background 200ms ease;
+}
+
+.music-toggle:active {
+  transform: scale(0.92);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .music-bar {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .music-toggle {
+    background: #fff9ef !important;
+    backdrop-filter: none !important;
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+}
