@@ -298,17 +298,13 @@
 
 /* The wax seal presses in under the finger the instant it's touched, the way
    pressing real wax would give — feedback on press, not on release. */
-.wax-seal {
-  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
-}
-
 .wax-seal:active {
-  transform: translateX(-50%) scale(0.94);
+  scale: 0.94;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .wax-seal:hover {
-    transform: translateX(-50%) scale(1.04);
+    scale: 1.04;
   }
 }
 

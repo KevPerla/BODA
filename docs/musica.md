@@ -13,6 +13,12 @@ canción. El reproductor ya está programado — solo falta el archivo.
 public/night-changes.mp3
 ```
 
+> **Cuidado con la doble extensión.** Windows esconde las extensiones conocidas,
+> así que al renombrar un archivo que ya se llama `cancion.mp3` y escribir
+> `night-changes.mp3`, queda guardado como `night-changes.mp3.mp3` y el sitio no
+> lo encuentra. Para verlo: en el Explorador, pestaña **Vista → Extensiones de
+> nombre de archivo**. El nombre correcto termina en un solo `.mp3`.
+
 Listo. No hay que tocar código: la ruta ya está configurada en
 `SONG_URL` dentro de [`src/routes/index.tsx`](../src/routes/index.tsx).
 

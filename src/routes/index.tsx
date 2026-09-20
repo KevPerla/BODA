@@ -56,12 +56,16 @@ const WIPE_REVEAL_MS = 420;
 
 export const Route = createFileRoute("/")({
   component: Index,
-  // Reads ?invitado=Nombre from the URL so each guest can get their own link
-  // (e.g. tusitio.com/?invitado=Maria+Lopez) with the invitation and RSVP
-  // already addressed to them, instead of a generic placeholder.
-  validateSearch: (search: Record<string, unknown>): { invitado?: string } => ({
-    invitado: typeof search.invitado === "string" && search.invitado.trim() ? search.invitado.trim() : undefined,
-  }),
+  // Each guest gets their own link — ?invitado=Nombre&pases=2 — so the
+  // envelope is addressed to them and states how many seats are theirs.
+  // Build the links with the /generador page.
+  validateSearch: (search: Record<string, unknown>): { invitado?: string; pases?: number } => {
+    const raw = Number(search.pases);
+    return {
+      invitado: typeof search.invitado === "string" && search.invitado.trim() ? search.invitado.trim() : undefined,
+      pases: Number.isFinite(raw) && raw >= 1 && raw <= 20 ? Math.floor(raw) : undefined,
+    };
+  },
 });
 
 // Three bars that dance while the song plays and settle flat when it's muted —
@@ -94,7 +98,7 @@ function MusicIcon({ playing }: { playing: boolean }) {
 function Index() {
   const [open, setOpen] = useState(false);
   const [galleryRevealed, setGalleryRevealed] = useState(false);
-  const { invitado } = Route.useSearch();
+  const { invitado, pases } = Route.useSearch();
   const guestName = invitado ?? "Invitado";
   const galleryRef = useRef<HTMLElement>(null);
 
@@ -313,10 +317,19 @@ function Index() {
                       className="mt-1.5 text-[26px] leading-tight sm:text-4xl"
                       style={{ fontFamily: "'Tangerine', cursive", fontWeight: 700, color: "#2a1f14" }}
                     >
-                      {`{${guestName}}`}
+                      {guestName}
                     </span>
                     <div className="mt-2 h-px w-8" style={{ background: "var(--wax-gold)" }} />
-                    <span className="mt-3 text-[11px] uppercase tracking-[0.22em] text-neutral-500">Con cariño</span>
+                    {pases ? (
+                      <span
+                        className="mt-2 whitespace-nowrap text-[11px] uppercase tracking-[0.12em]"
+                        style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600, color: "var(--wax-gold-dark)" }}
+                      >
+                        {pases === 1 ? "1 espacio" : `${pases} espacios`}
+                      </span>
+                    ) : (
+                      <span className="mt-3 text-[11px] uppercase tracking-[0.22em] text-neutral-500">Con cariño</span>
+                    )}
                   </div>
                 )}
                 {c.kind === "details" && (
@@ -447,13 +460,20 @@ function Index() {
             aria-label={open ? "Cerrar sobre" : "Abrir sobre"}
             // The seal is the one gesture the whole page hangs on, so it
             // answers the finger on press rather than waiting for release.
-            className="wax-seal group absolute left-1/2 -translate-x-1/2 focus:outline-none"
+            // Fixed width matters: the button is absolutely positioned, so
+            // without one it shrink-wraps and the seal image collapses to zero
+            // width against the preflight `img { max-width: 100% }` rule.
+            className="wax-seal group absolute left-1/2 block h-20 w-20 -translate-x-1/2 focus:outline-none sm:h-24 sm:w-24"
             style={{
               bottom: "-14%",
               zIndex: 20,
               pointerEvents: open ? "none" : "auto",
               opacity: open ? 0 : 1,
-              transition: "opacity 350ms ease 150ms",
+              // The press feedback rides the separate `scale` property, so it
+              // composes with Tailwind's `translate` centring instead of
+              // fighting it — transform-based scaling wiped out the -50% and
+              // made the seal jump sideways on every tap.
+              transition: "opacity 350ms ease 150ms, scale 160ms cubic-bezier(0.23,1,0.32,1)",
               backfaceVisibility: "hidden",
               WebkitBackfaceVisibility: "hidden",
             }}
@@ -463,7 +483,7 @@ function Index() {
               alt="Sello de cera J&D"
               width={1024}
               height={1024}
-              className="h-20 w-20 select-none sm:h-24 sm:w-24"
+              className="h-full w-full select-none"
               style={{
                 filter:
                   "drop-shadow(0 10px 18px rgba(0,0,0,0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.5))",
@@ -514,7 +534,7 @@ function Index() {
 
       <GiftSection />
 
-      <RsvpSection guestName={invitado} />
+      <RsvpSection guestName={invitado} pases={pases} />
 
       {/* Google font for script lettering */}
       <link
@@ -1678,7 +1698,7 @@ function CeremonySection() {
 
         <div className="mt-12 grid w-full items-center gap-10 sm:grid-cols-2 sm:gap-14">
           <div className="flex flex-col gap-7" style={reveal(100)}>
-            <InfoRow icon="clock" label="Hora" value="4:00 PM" sub="Sábado, 13 de diciembre" />
+            <InfoRow icon="clock" label="Hora" value="4:30 PM" sub="Domingo, 13 de diciembre" />
             <InfoRow icon="pin" label="Lugar" value={VENUE_NAME} sub={VENUE_ADDRESS} />
             <a
               href={MAPS_URL}
@@ -1706,12 +1726,6 @@ const AVOID_COLORS = [
   { id: "azul-cielo", color: "#A7D5F6", label: "Azul cielo" },
   { id: "azul", color: "#78ADD4", label: "Azul" },
   { id: "amarillo", color: "#FAE186", label: "Amarillo" },
-] as const;
-
-const RECOMMENDED_COLORS = [
-  { id: "verde-salvia", color: "#9CAF88", label: "Verde salvia" },
-  { id: "rosa-palo", color: "#D9A9A0", label: "Rosa palo" },
-  { id: "champan", color: "#D8C9A3", label: "Champán" },
 ] as const;
 
 function DressCodeIcon({ size = 30, color = "#6b4d12" }: { size?: number; color?: string }) {
@@ -1855,24 +1869,6 @@ function DressCodeSection() {
         <div className="mt-11">
           <ColorCluster colors={AVOID_COLORS} inView={inView} baseDelay={350} size={76} />
         </div>
-
-        <div
-          className="mt-7 flex items-center gap-2.5"
-          style={{ opacity: inView ? 1 : 0, transition: "opacity 500ms ease-out 850ms" }}
-        >
-          <div className="flex -space-x-1.5">
-            {RECOMMENDED_COLORS.map((c) => (
-              <span
-                key={c.id}
-                className="h-3.5 w-3.5 rounded-full"
-                style={{ background: c.color, boxShadow: "0 0 0 2px #FFF9EF, 0 0 0 3px rgba(60,45,15,0.12)" }}
-              />
-            ))}
-          </div>
-          <span className="text-xs" style={{ fontFamily: "'Inter', sans-serif", color: "#7a7264" }}>
-            Recomendado: verde salvia, rosa palo y champán
-          </span>
-        </div>
       </div>
     </section>
   );
@@ -1981,7 +1977,7 @@ function PersonCheckIcon({ size = 20, color = "#6b4d12" }: { size?: number; colo
 
 type RsvpStatus = "idle" | "sending" | "sent" | "error";
 
-function RsvpSection({ guestName }: { guestName?: string }) {
+function RsvpSection({ guestName, pases }: { guestName?: string; pases?: number }) {
   // Pre-filled from the ?invitado= link so a personalized invitation doesn't
   // make the guest retype the name we already addressed the envelope to.
   const [name, setName] = useState(guestName ?? "");
@@ -2045,6 +2041,20 @@ function RsvpSection({ guestName }: { guestName?: string }) {
                   ? `Nos encantaría que nos acompañes en este día tan especial, ${guestName}.`
                   : "Nos encantaría que nos acompañaras en este día tan especial."}
               </p>
+
+              {pases ? (
+                <p
+                  className="mt-3 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[13px]"
+                  style={{
+                    fontFamily: "'Inter', sans-serif",
+                    fontWeight: 600,
+                    color: "#6b4d12",
+                    background: "linear-gradient(160deg, #FEF6E0, #F3DFA0)",
+                  }}
+                >
+                  {pases === 1 ? "Hemos reservado 1 espacio para ti" : `Hemos reservado ${pases} espacios para ti`}
+                </p>
+              ) : null}
 
               <form onSubmit={handleSubmit} className="mt-8 text-left">
                 <label
