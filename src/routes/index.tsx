@@ -2118,7 +2118,7 @@ function RsvpSection({ guestName, pases }: { guestName?: string; pases?: number 
                       border: `1.5px solid ${attending === "no" ? "var(--wax-gold-dark)" : "rgba(150,105,30,0.25)"}`,
                     }}
                   >
-                    No podré ir
+                    No podré asistir
                   </button>
                 </div>
 
