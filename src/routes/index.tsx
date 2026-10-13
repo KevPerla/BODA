@@ -1851,7 +1851,7 @@ function DressCodeSection() {
             transition: "opacity 550ms ease-out 150ms, transform 550ms ease-out 150ms",
           }}
         >
-          ¿Qué me pongo?
+          Colores reservados
         </h2>
         <p
           className="mt-3 max-w-md text-[15px] sm:text-lg"
@@ -1862,8 +1862,8 @@ function DressCodeSection() {
             transition: "opacity 500ms ease-out 280ms",
           }}
         >
-          Hemos preparado esta celebración con mucho cariño; agradecemos que eviten esta gama de colores:
-          blanco, azul cielo, azul y amarillo — van reservados para la novia y el cortejo.
+          Hemos preparado esta celebración con mucho cariño. Te pedimos amablemente no usar estos tonos,
+          ya que están reservados para la novia y el cortejo: blanco, azul cielo, azul y amarillo.
         </p>
 
         <div className="mt-11">
@@ -2040,6 +2040,12 @@ function RsvpSection({ guestName, pases }: { guestName?: string; pases?: number 
                 {guestName
                   ? `Nos encantaría que nos acompañes en este día tan especial, ${guestName}.`
                   : "Nos encantaría que nos acompañaras en este día tan especial."}
+              </p>
+              <p
+                className="mt-3 text-[13px] uppercase tracking-[0.18em]"
+                style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600, color: "#6b4d12" }}
+              >
+                Confirma a más tardar el 13 de noviembre
               </p>
 
               {pases ? (
